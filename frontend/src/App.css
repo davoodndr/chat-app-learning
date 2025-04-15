@@ -4,11 +4,9 @@
   padding: 0;
 }
 
-.chat-window{
+.app{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -16,11 +14,20 @@
   right: 0;
 }
 
-.join-chat-container{
+.join-chat{
   display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.join-chat-container{
+  display: inline-flex;
   flex-direction: column;
+  width: 100%;
   gap: 10px;
-  min-width: 250px;
+  max-width: 250px;
 }
 
 .join-chat-container input{

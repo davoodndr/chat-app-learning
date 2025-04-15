@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import ScrollToBottom from 'react-scroll-to-bottom'
+import { useSocket } from '../provider/SocketProvider';
 
 function Chat({socket, username, room}) {
 
   const [currentMsg, setCurrentMsg] = useState("");
   const [msgList, setMsgList] = useState([]);
+
+  //const socket = useSocket();
 
   const sendMsg = async() => {
     if(currentMsg){
@@ -22,11 +25,11 @@ function Chat({socket, username, room}) {
     }
   }
 
-  useEffect(() => {
+  /* useEffect(() => {
     socket.on("receive_message", (data) => {
       setMsgList(prev => [...prev,data])
     })
-  }, [socket])
+  }, [socket]) */
 
   return (
     <div className='chat-box'>

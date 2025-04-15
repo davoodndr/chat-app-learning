@@ -9,16 +9,43 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const io = new Server(server, {
+const io = new Server(3000, {
   cors: true
 })
+
+const userToSocketIdMap = new Map();
+const socketIdtoUserMap = new Map();
 
 io.on("connection", (socket) => {
   console.log(`User connected ${socket.id}`);
 
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  socket.on("join:room", (data) => {
+    const { user, room } = data;
+    console.log(`User with name: ${user} joined room: ${room}`);
+
+    userToSocketIdMap.set(user, socket.id);
+    socketIdtoUserMap.set(socket.id, user);
+
+    io.to(room).emit("user:joined", { user, id: socket.id })
+    socket.join(room);
+
+    io.to(socket.id).emit("join:room", data);
+  })
+
+  socket.on("user:call", ({ to, offer}) => {
+    io.to(to).emit('incoming:call', { from: socket.id, offer});
+  })
+
+  socket.on("call:accepted", ({ to, ans }) => {
+    io.to(to).emit('call:accepted', { from: socket.id, ans});
+  })
+
+  socket.on('peer:nego:needed', ({ to, offer }) => {
+    io.to(to).emit('peer:nego:needed', { from: socket.id, offer});
+  })
+
+  socket.on('peer:nego:done', ({ to, ans }) => {
+    io.to(to).emit('peer:nego:final', { from: socket.id, ans});
   })
 
   socket.on("send_message", (data) => {
@@ -31,6 +58,6 @@ io.on("connection", (socket) => {
 
 })
 
-server.listen(3000, () => {
+/* server.listen(3000, () => {
   console.log(`Server is running on port: 3000`);
-})
+}) */
