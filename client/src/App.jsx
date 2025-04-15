@@ -8,7 +8,7 @@ import { Room } from './pages/Room';
 import { useEffect, useRef, useState } from 'react';
 import { io } from "socket.io-client";
 
-const SERVER_URL = "http://localhost:5000"; // Your signaling server
+const SERVER_URL = "https://chat-app-learning.onrender.com"; // Your signaling server
 const ROOM_ID = "test-room"; // Customize per session
 
 function App() {
