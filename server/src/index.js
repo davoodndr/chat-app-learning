@@ -9,7 +9,7 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const io = new Server(3000, {
+const io = new Server("https://chat-app-learning.onrender.com", {
   cors: true
 })
 
